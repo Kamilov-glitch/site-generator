@@ -8,8 +8,6 @@ $parser = new Parser();
 $renderer = new Renderer();
 
 $markdown = file_get_contents('../Sites/example/example.md');
-
-
 $content = $parser->parseMarkdown($markdown);
 
 $renderer->render($content);

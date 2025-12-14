@@ -2,13 +2,19 @@
 
 class Renderer
 {
+    const ROOT_FOLDER = "/var/www/html";
+    const COMPONENT_FOLDER = self::ROOT_FOLDER . "/Sites/example/components";
+
     /**
      * @param array $content
      * @return void
      */
     function render(array $content): void
     {
-        $this->listFolderFiles("../" . __DIR__);
+        echo "<br>";
+        echo __DIR__;
+        echo "<br>";
+        $this->listFolderFiles(self::COMPONENT_FOLDER);
     }
 
      //to list folder and its content
@@ -17,7 +23,8 @@ class Renderer
      * @param $dir
      * @return void
      */
-    function listFolderFiles($dir){
+    function listFolderFiles($dir): void
+    {
         $ffs = scandir($dir);
 
         unset($ffs[array_search('.', $ffs, true)]);
