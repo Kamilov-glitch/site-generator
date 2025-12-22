@@ -7,58 +7,33 @@ class Parser
      * @return string[]
      */
     function parseMarkdown(string $markdown): array {
-        return $this->getComponentNames($markdown);
+        // TODO: for future, when I'll be having components made with markdowns
+         return $this->getComponentNames($markdown);
     }
 
     /**
      * @param $markdown
      * @return string[]
      */
-    function getComponentNames(&$markdown): array {
-        $markdown = preg_replace("/\s+/", "", $markdown);
+    function getComponentNames($markdown): array {
+        $lines = explode(PHP_EOL, $markdown);
         $components = [];
-        while (str_contains($markdown, '{{') && str_contains($markdown, '}}')) {
-            $components[] = $this->getComponentName($markdown);
+        foreach ($lines as $line) {
+            $this->parseLine($line);
         }
 
-        var_dump($components);
+//        var_dump($components);
 
         return $components;
     }
 
-    /**
-     * @param $markdown
-     * @return string
-     */
-    function getComponentName(&$markdown): string {
-        echo "markdown at start: " . $markdown;
-        echo "<br>";
-        $bracketStart = strpos($markdown, '{');
-        $bracketEnd = strpos($markdown, "}");
-        echo 'brackerStart: ' . $bracketStart;
-        echo "<br>";
-        echo 'brackerEnd: ' . $bracketEnd;
-        echo "<br>";
+    // TODO: make sure it only removes the # at the begining of the line, cause could be a case with header being "#"
+    // TODO: gotta make sure "p" that are on multiple lines do render properly - I think if I just turn the one empty space to "\n" it should be fine
+    function parseLine($line) {
+        if (str_starts_with($line, "####")) {
+            $parsedLine = preg_replace("/#+/", "<h4>", $line);
 
-        $component = substr($markdown, $bracketStart + 2, $bracketEnd - 2);
-
-        echo 'component: ' . $component;
-
-        echo "<br>";
-
-        $componentLength = strlen($component);
-
-        echo "<br>";
-
-        echo 'len: ' . $componentLength;
-
-        $markdown = substr_replace($markdown, '', $bracketStart, $componentLength + 4);
-
-        echo "<br>";
-
-        echo 'markdown at end: ' . $markdown;
-        echo "<br>";
-
-        return $component;
+            var_dump($parsedLine);
+        }
     }
 }
