@@ -3,7 +3,7 @@
 ### Subsection
 #### asdasd
 
-This is a paragraph.
+This **is** a **paragraph**.
 It can span multiple lines.
 
 This is another paragraph.
