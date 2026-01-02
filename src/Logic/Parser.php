@@ -64,7 +64,7 @@ class Parser
         if (str_contains($line, "**")) {
             $parsedLine = $this->replaceAllOccurences($line, "**", "strong");
 
-            echo "STRONG";
+            echo "STRONG: ";
             var_dump($parsedLine);
             echo "<br>";
         }
@@ -80,12 +80,11 @@ class Parser
      * @param $htmlElement
      * @return string
      */
-    function locateReplacement($haystack, $needle, $htmlElement, $additionalOffset) {
+    function locateReplacement($haystack, $needle, $htmlElement) {
         $needleLen = strlen($needle);
         $startPos = strpos($haystack, $needle);
-        $offset = $startPos + $needleLen + $additionalOffset;
+        $offset = $startPos + $needleLen;
         $endPos = strpos($haystack, $needle, $offset);
-
 
         $locatedStringLen = $endPos - $offset;
 
@@ -103,19 +102,15 @@ class Parser
     function replaceAllOccurences($haystack, $needle, $htmlElement) {
         $parsedHaystack = $haystack;
 
-        while (str_contains($haystack, $needle)) {
-            $additionalOffset = 0; // its to get the next substr each time
-
-            $replacement = $this->locateReplacement($haystack, $needle, $htmlElement, $additionalOffset);
+        while (str_contains($parsedHaystack, $needle)) {
+            $replacement = $this->locateReplacement($parsedHaystack, $needle, $htmlElement);
 
             $parsedHaystack = preg_replace(
                 "/\*\*.*?\*\*/",
                 $replacement,
-                $haystack,
+                $parsedHaystack,
                 1
             );
-
-            $additionalOffset += 1;
         }
 
         return $parsedHaystack;
