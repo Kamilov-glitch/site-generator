@@ -116,5 +116,3 @@ class Parser
         return $parsedHaystack;
     }
 }
-
-// TODO current functionality won't work, cause it doesn't return a parsedLine rather just the part that needed to be turned into html element
