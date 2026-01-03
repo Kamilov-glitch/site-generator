@@ -35,38 +35,52 @@ class Parser
      */
     function parseLine($line) {
         $parsedLine = $line;
-        if (str_starts_with($line, "####")) {
-            $parsedLine = preg_replace("/#+/", "<h4>", $line) . "</h4>";
+        if (str_starts_with($parsedLine, "####")) {
+            $parsedLine = preg_replace("/#+/", "<h4>", $parsedLine) . "</h4>";
 
             echo "pasedLine: ";
             var_dump($parsedLine);
             echo "<br>";
-        } elseif (str_starts_with($line, "###")) {
-            $parsedLine = preg_replace("/#+/", "<h3>", $line) . "</h3>";
+        } elseif (str_starts_with($parsedLine, "###")) {
+            $parsedLine = preg_replace("/#+/", "<h3>", $parsedLine) . "</h3>";
 
             echo "pasedLine: ";
             var_dump($parsedLine);
             echo "<br>";
-        } elseif (str_starts_with($line, "##")) {
-            $parsedLine = preg_replace("/#+/", "<h2>", $line) . "</h2>";
+        } elseif (str_starts_with($parsedLine, "##")) {
+            $parsedLine = preg_replace("/#+/", "<h2>", $parsedLine) . "</h2>";
 
             echo "pasedLine: ";
             var_dump($parsedLine);
             echo "<br>";
-        } elseif (str_starts_with($line, "#")) {
-            $parsedLine = preg_replace("/#+/", "<h1>", $line) . "</h1>";
+        } elseif (str_starts_with($parsedLine, "#")) {
+            $parsedLine = preg_replace("/#+/", "<h1>", $parsedLine) . "</h1>";
+
+            echo "pasedLine: ";
+            var_dump($parsedLine);
+            echo "<br>";
+        } elseif (str_starts_with($parsedLine, "- ")) {
+            $parsedLine = preg_replace("/- /", "<li>", $parsedLine) . "</li>";
 
             echo "pasedLine: ";
             var_dump($parsedLine);
             echo "<br>";
         }
 
-        if (str_contains($line, "**")) {
-            $parsedLine = $this->replaceAllOccurences($line, "**", "strong");
+        if (str_contains($parsedLine, "**")) {
+            $parsedLine = $this->replaceAllOccurences($parsedLine, "**", "strong");
 
             echo "STRONG: ";
             var_dump($parsedLine);
             echo "<br>";
+        }
+
+        if (str_contains($parsedLine, "*")) {
+            echo "Italic: ";
+            var_dump($parsedLine);
+            echo "<br>";
+
+            $parsedLine = $this->replaceAllOccurences($parsedLine, "*", "i");
         }
 
         return $parsedLine;
@@ -105,8 +119,12 @@ class Parser
         while (str_contains($parsedHaystack, $needle)) {
             $replacement = $this->locateReplacement($parsedHaystack, $needle, $htmlElement);
 
+            echo "<br>";
+            var_dump($replacement);
+            echo "<br>";
+
             $parsedHaystack = preg_replace(
-                "/\*\*.*?\*\*/",
+                $needle . "/.*?/" . $needle,
                 $replacement,
                 $parsedHaystack,
                 1
